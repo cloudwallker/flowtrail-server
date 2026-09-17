@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.2.0 https://maven.apache.org/xsd/assembly-2.2.0.xsd">
+  <id>dist</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <baseDirectory>flowtrail-server-${project.version}</baseDirectory>
+  <fileSets>
+    <fileSet>
+      <directory>bin</directory>
+      <outputDirectory>bin</outputDirectory>
+      <fileMode>0755</fileMode>
+    </fileSet>
+    <fileSet>
+      <directory>examples</directory>
+      <outputDirectory>examples</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>docs</directory>
+      <outputDirectory>docs</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>licenses</directory>
+      <outputDirectory>licenses</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>.</directory>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <include>start.bat</include><include>README.md</include>
+        <include>LICENSE</include>
+        <include>THIRD_PARTY_NOTICES.md</include>
+        <include>.env.example</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+  <files>
+    <file>
+      <source>${project.build.directory}/flowtrail-server.jar</source>
+      <outputDirectory>lib</outputDirectory>
+    </file>
+  </files>
+</assembly>

@@ -1,0 +1,304 @@
+[
+  {
+    "jar": "HikariCP-6.3.3.jar",
+    "sha256": "709f378c05756280939ce50fc1b1f1a53bb8e1899dc1b249f21f12703640b48b",
+    "licenseResources": []
+  },
+  {
+    "jar": "classmate-1.7.3.jar",
+    "sha256": "75fbda45456f123fb6e2028a6189442d8d0730b357adce4c0a6d7e789f70669b",
+    "licenseResources": [
+      "classmate-1.7.3/META-INF__LICENSE",
+      "classmate-1.7.3/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "h2-2.3.232.jar",
+    "sha256": "8dae62d22db8982c3dcb3826edb9c727c5d302063a67eef7d63d82de401f07d3",
+    "licenseResources": []
+  },
+  {
+    "jar": "hibernate-validator-8.0.3.Final.jar",
+    "sha256": "2ad24670fd08e21d3f43d3105d5326bd5ef6b01e819c5cd103823866b954517e",
+    "licenseResources": []
+  },
+  {
+    "jar": "httpclient5-5.5.2.jar",
+    "sha256": "5aec3f3447ec816e593e380b59fbe3e42083318af6b215bc177386f7742f6146",
+    "licenseResources": [
+      "httpclient5-5.5.2/META-INF__LICENSE",
+      "httpclient5-5.5.2/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "httpcore5-5.3.6.jar",
+    "sha256": "8fb4528d3e970aca440523a1bd698a389fa710ecfea4c5c6096698b86d1669ce",
+    "licenseResources": [
+      "httpcore5-5.3.6/META-INF__LICENSE",
+      "httpcore5-5.3.6/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "httpcore5-h2-5.3.6.jar",
+    "sha256": "479a8aa5e6f99030a2a446a68d1f62320698932746f811fc656a1ea06b94184d",
+    "licenseResources": [
+      "httpcore5-h2-5.3.6/META-INF__LICENSE",
+      "httpcore5-h2-5.3.6/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "jackson-annotations-2.19.4.jar",
+    "sha256": "ab26383fa3c10c0df1ffd1bb035d81161c059b1af71927d73c24473c058baa16",
+    "licenseResources": [
+      "jackson-annotations-2.19.4/META-INF__LICENSE",
+      "jackson-annotations-2.19.4/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "jackson-core-2.19.4.jar",
+    "sha256": "466ae4dc4f7054f51525f4211df411d9a64d65cc169995d32bf49e20e6f586e5",
+    "licenseResources": [
+      "jackson-core-2.19.4/META-INF__LICENSE",
+      "jackson-core-2.19.4/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "jackson-databind-2.19.4.jar",
+    "sha256": "b781c431be870deb0bf84421e99e774c256a701f4ba678df80248f55cd16ff74",
+    "licenseResources": [
+      "jackson-databind-2.19.4/META-INF__LICENSE",
+      "jackson-databind-2.19.4/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "jackson-datatype-jdk8-2.19.4.jar",
+    "sha256": "c0e0dc3039f9a37a099b2602838f833ea8c15c56445a0eb5463d0c7e0c355da2",
+    "licenseResources": [
+      "jackson-datatype-jdk8-2.19.4/META-INF__LICENSE",
+      "jackson-datatype-jdk8-2.19.4/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "jackson-datatype-jsr310-2.19.4.jar",
+    "sha256": "070af4d7c345cf975ff783138050678e6194e5bb88ab489385d0311a5fcb1585",
+    "licenseResources": [
+      "jackson-datatype-jsr310-2.19.4/META-INF__LICENSE",
+      "jackson-datatype-jsr310-2.19.4/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "jackson-module-parameter-names-2.19.4.jar",
+    "sha256": "91a1f2f1b595c4d5c902a7d6d383354a3ba9bf87b19bdf1d473f55306f79c6e5",
+    "licenseResources": [
+      "jackson-module-parameter-names-2.19.4/META-INF__LICENSE",
+      "jackson-module-parameter-names-2.19.4/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "jakarta.annotation-api-2.1.1.jar",
+    "sha256": "5f65fdaf424eee2b55e1d882ba9bb376be93fb09b37b808be6e22e8851c909fe",
+    "licenseResources": [
+      "jakarta.annotation-api-2.1.1/META-INF__LICENSE.md",
+      "jakarta.annotation-api-2.1.1/META-INF__NOTICE.md"
+    ]
+  },
+  {
+    "jar": "jakarta.validation-api-3.0.2.jar",
+    "sha256": "291c25e6910cc6a7ebd96d4c6baebf6d7c37676c5482c2d96146e901b62c1fc9",
+    "licenseResources": []
+  },
+  {
+    "jar": "jboss-logging-3.6.2.Final.jar",
+    "sha256": "f423e07bffce73bf2b6cc872f30981c06fe9cfd5a86a0b4f5fbdd11cfe0148e0",
+    "licenseResources": []
+  },
+  {
+    "jar": "jul-to-slf4j-2.0.17.jar",
+    "sha256": "a7afcd23b9cfd1475e55c94f943b808c5922035e7e2c2a5c65a487a4106bc538",
+    "licenseResources": [
+      "jul-to-slf4j-2.0.17/META-INF__LICENSE.txt"
+    ]
+  },
+  {
+    "jar": "log4j-api-2.24.3.jar",
+    "sha256": "5b4a0a0cd0e751ded431c162442bdbdd53328d1f8bb2bae5fc1bbeee0f66d80f",
+    "licenseResources": [
+      "log4j-api-2.24.3/META-INF__LICENSE",
+      "log4j-api-2.24.3/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "log4j-to-slf4j-2.24.3.jar",
+    "sha256": "c7f2b0c612a4eb05b1587d1c880eb4cf5f4f53850676a8ede8da2b8fabb4f73f",
+    "licenseResources": [
+      "log4j-to-slf4j-2.24.3/META-INF__LICENSE",
+      "log4j-to-slf4j-2.24.3/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "logback-classic-1.5.32.jar",
+    "sha256": "2d4cf592db78be2de4d6140434c2fec170dcb16a09e8c8b7b207dbf5e31b848a",
+    "licenseResources": []
+  },
+  {
+    "jar": "logback-core-1.5.32.jar",
+    "sha256": "6a904d5778d0e361a9692f9cbe68b1b0620ae0f3eda2ec2ed09102755bf036c4",
+    "licenseResources": []
+  },
+  {
+    "jar": "micrometer-commons-1.15.9.jar",
+    "sha256": "3fab2a0ff208d7cb52aee923c46db6451641037ec7c74d06cb03cc3689c39771",
+    "licenseResources": [
+      "micrometer-commons-1.15.9/META-INF__LICENSE",
+      "micrometer-commons-1.15.9/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "micrometer-observation-1.15.9.jar",
+    "sha256": "9d2406587485b228abd64a90f7e8059a3fd0251f2289e931ae9c5286eaebfc1e",
+    "licenseResources": [
+      "micrometer-observation-1.15.9/META-INF__LICENSE",
+      "micrometer-observation-1.15.9/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "slf4j-api-2.0.17.jar",
+    "sha256": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832",
+    "licenseResources": [
+      "slf4j-api-2.0.17/META-INF__LICENSE.txt"
+    ]
+  },
+  {
+    "jar": "snakeyaml-2.4.jar",
+    "sha256": "ef779af5d29a9dde8cc70ce0341f5c6f7735e23edff9685ceaa9d35359b7bb7f",
+    "licenseResources": []
+  },
+  {
+    "jar": "spring-aop-6.2.16.jar",
+    "sha256": "2971f19ff56ec28a2833dbee3f5b8e9bce8a1015b18b2bef5ff070170d4b90f3",
+    "licenseResources": [
+      "spring-aop-6.2.16/META-INF__license.txt",
+      "spring-aop-6.2.16/META-INF__notice.txt"
+    ]
+  },
+  {
+    "jar": "spring-beans-6.2.16.jar",
+    "sha256": "6cc57daaffa4a66fc2293062d7056b6f9ec122c65721c4b02e03ec810d4708af",
+    "licenseResources": [
+      "spring-beans-6.2.16/META-INF__license.txt",
+      "spring-beans-6.2.16/META-INF__notice.txt"
+    ]
+  },
+  {
+    "jar": "spring-boot-3.5.11.jar",
+    "sha256": "ebf6229eb151c8eaa398671cc130439248f48c309afde9dcc81b8acfaa0f5f9f",
+    "licenseResources": [
+      "spring-boot-3.5.11/META-INF__LICENSE.txt",
+      "spring-boot-3.5.11/META-INF__NOTICE.txt"
+    ]
+  },
+  {
+    "jar": "spring-boot-autoconfigure-3.5.11.jar",
+    "sha256": "1bfb60bb35836b72119335fc575a91dcc2984ba4f7214deebb4ee8e44eb51efa",
+    "licenseResources": [
+      "spring-boot-autoconfigure-3.5.11/META-INF__LICENSE.txt",
+      "spring-boot-autoconfigure-3.5.11/META-INF__NOTICE.txt"
+    ]
+  },
+  {
+    "jar": "spring-boot-jarmode-tools-3.5.11.jar",
+    "sha256": "c7f27e96aa51c7fd68460139069aa83b9c23a31c0b88a261c3b3cf0229585a8b",
+    "licenseResources": [
+      "spring-boot-jarmode-tools-3.5.11/META-INF__LICENSE.txt",
+      "spring-boot-jarmode-tools-3.5.11/META-INF__NOTICE.txt"
+    ]
+  },
+  {
+    "jar": "spring-context-6.2.16.jar",
+    "sha256": "2e7feb5fd910cb4c77cf096c8dbb46701346e9a982b6aa60fb68b490966e4cb5",
+    "licenseResources": [
+      "spring-context-6.2.16/META-INF__license.txt",
+      "spring-context-6.2.16/META-INF__notice.txt"
+    ]
+  },
+  {
+    "jar": "spring-core-6.2.16.jar",
+    "sha256": "da9b13d75d42d7dd4e6a3a5a16c9bd703cc4a489eaa5effb860d67957c3752c2",
+    "licenseResources": [
+      "spring-core-6.2.16/META-INF__license.txt",
+      "spring-core-6.2.16/META-INF__notice.txt"
+    ]
+  },
+  {
+    "jar": "spring-expression-6.2.16.jar",
+    "sha256": "7e7ac47558ab9bc1077ebca196d9ec16ef44a5a0ac4eeaeb9e4342179a860028",
+    "licenseResources": [
+      "spring-expression-6.2.16/META-INF__license.txt",
+      "spring-expression-6.2.16/META-INF__notice.txt"
+    ]
+  },
+  {
+    "jar": "spring-jcl-6.2.16.jar",
+    "sha256": "944b76bfa74677ead2fcb70f6660d84260ae064fcbfb718c5270568b5907947c",
+    "licenseResources": [
+      "spring-jcl-6.2.16/META-INF__license.txt",
+      "spring-jcl-6.2.16/META-INF__notice.txt"
+    ]
+  },
+  {
+    "jar": "spring-jdbc-6.2.16.jar",
+    "sha256": "f3d725b6bb286087c19ef679c9a8b7abccf6a6ef12bd004765117805dc698676",
+    "licenseResources": [
+      "spring-jdbc-6.2.16/META-INF__license.txt",
+      "spring-jdbc-6.2.16/META-INF__notice.txt"
+    ]
+  },
+  {
+    "jar": "spring-tx-6.2.16.jar",
+    "sha256": "af5bc791d25429fd30874994b40b9a237f66600cc56f930fa970c27e388c5af1",
+    "licenseResources": [
+      "spring-tx-6.2.16/META-INF__license.txt",
+      "spring-tx-6.2.16/META-INF__notice.txt"
+    ]
+  },
+  {
+    "jar": "spring-web-6.2.16.jar",
+    "sha256": "ec5f1f3f288e4c91c88e9067b05dcff2b936721888a0c8026d3640738e263567",
+    "licenseResources": [
+      "spring-web-6.2.16/META-INF__license.txt",
+      "spring-web-6.2.16/META-INF__notice.txt"
+    ]
+  },
+  {
+    "jar": "spring-webmvc-6.2.16.jar",
+    "sha256": "6be126bba6c6326901465dee7b4ceb8d97f1a2a59d7e5f5338e157f7239cfa97",
+    "licenseResources": [
+      "spring-webmvc-6.2.16/META-INF__license.txt",
+      "spring-webmvc-6.2.16/META-INF__notice.txt"
+    ]
+  },
+  {
+    "jar": "tomcat-embed-core-10.1.52.jar",
+    "sha256": "522f540d09d14c86e0d300d6c85d9604ccc951ade60678e16822410bad6658a8",
+    "licenseResources": [
+      "tomcat-embed-core-10.1.52/META-INF__LICENSE",
+      "tomcat-embed-core-10.1.52/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "tomcat-embed-el-10.1.52.jar",
+    "sha256": "cbb6ed2e5746215273027e8a8083a4e2472e28c0132491f1e772f8fea5a5e0ac",
+    "licenseResources": [
+      "tomcat-embed-el-10.1.52/META-INF__LICENSE",
+      "tomcat-embed-el-10.1.52/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "tomcat-embed-websocket-10.1.52.jar",
+    "sha256": "27b1f5c0c94d96cf8cc222219d189e092fab7b2ddee48e8320a60248aa9d0e75",
+    "licenseResources": [
+      "tomcat-embed-websocket-10.1.52/META-INF__LICENSE",
+      "tomcat-embed-websocket-10.1.52/META-INF__NOTICE"
+    ]
+  }
+]

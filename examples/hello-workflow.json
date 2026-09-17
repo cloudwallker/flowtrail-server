@@ -1,0 +1,20 @@
+{
+  "name": "我的第一条工作流",
+  "nodes": [
+    {
+      "id": "summary",
+      "type": "TEXT",
+      "dependsOn": [
+        "greeting"
+      ],
+      "text": "流程完成：${greeting.output}"
+    },
+    {
+      "id": "greeting",
+      "type": "TEXT",
+      "dependsOn": [],
+      "text": "你好，${input.name}！"
+    }
+  ]
+}
+
