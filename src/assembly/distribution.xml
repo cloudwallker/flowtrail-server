@@ -12,14 +12,6 @@
       <fileMode>0755</fileMode>
     </fileSet>
     <fileSet>
-      <directory>examples</directory>
-      <outputDirectory>examples</outputDirectory>
-    </fileSet>
-    <fileSet>
-      <directory>docs</directory>
-      <outputDirectory>docs</outputDirectory>
-    </fileSet>
-    <fileSet>
       <directory>licenses</directory>
       <outputDirectory>licenses</outputDirectory>
     </fileSet>

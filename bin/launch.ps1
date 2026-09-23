@@ -48,19 +48,6 @@ try {
         Write-Host "Ready: $jar"
         exit $LASTEXITCODE
     }
-    if ($defaultPort -eq 0) {
-        while ($true) {
-            Write-Host "`nFlowTrail CLI - 1: Offline demo  2: Doctor  3: Help  0: Exit"
-            $choice = Read-Host 'Select'
-            switch ($choice) {
-                '1' { & $java '-Dfile.encoding=UTF-8' '-jar' $jar run examples/hello.json }
-                '2' { & $java '-Dfile.encoding=UTF-8' '-jar' $jar doctor }
-                '3' { & $java '-Dfile.encoding=UTF-8' '-jar' $jar --help }
-                '0' { exit 0 }
-                default { Write-Host 'Choose 0, 1, 2 or 3.' }
-            }
-        }
-    }
     $port = $defaultPort
     if ($env:SERVER_PORT) { $port = [int]$env:SERVER_PORT }
     if ($port -lt 1 -or $port -gt 65535) { throw 'SERVER_PORT must be between 1 and 65535.' }
