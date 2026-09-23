@@ -44,14 +44,14 @@ superpowers/
 *.mv.db
 *.trace.db
 
-# Local development material; keep the public repository source-only
+# Local development material
 **/superpowers/
 **/tests/
 **/test/
 /.github/
-/docs/
 /benchmarks/
 /artifacts/
 /e2e/
-/examples/
 /AGENTS.md
+/docs/publishing.md
+/docs/verification.md
