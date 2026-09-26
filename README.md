@@ -1,14 +1,20 @@
 # FlowTrail Server
 
-**中文简介：** 基于 Java 21 的工作流学习服务，支持 JSON DAG 校验、按依赖执行、节点间数据传递，以及通过本地网页查看持久化执行历史。默认示例离线运行，使用嵌入式 H2 数据库。
+### Local workflows with inspectable execution history
 
-**English:** A Java 21 workflow service for validating and executing JSON DAGs, passing data between nodes, and inspecting persistent execution history through a local web interface. The default demo runs offline with an embedded H2 database.
+**Define text and HTTP steps as a JSON dependency graph, pass data between nodes, and inspect each run in a local web interface. Workflow definitions and execution history persist across restarts.**
 
-Windows 可双击根目录 `start.bat`：自动查找 Java 21+。服务就绪后自动打开浏览器；保持终端窗口打开，按 Ctrl+C 停止服务。再次双击会打开已运行的同名服务。缺少 JAR 时会提示先构建；启动失败保留错误信息。`start.bat -Check` 仅检查启动环境。
+**用 JSON 描述文本与 HTTP 步骤的依赖关系，在节点间传递数据，通过本地网页查看每次执行；工作流定义与运行历史在重启后仍然保留。**
 
-**让每一步执行，都有迹可循。** 一个独立实现的 Java 21 工作流学习服务：用 JSON 描述 DAG，传递输入和节点结果，通过网页查看执行轨迹及历史。
+This learning project executes nodes serially in dependency order. The default demo runs offline from a single JAR with an embedded database.
+
+面向工作流学习，按依赖顺序串行执行节点。
 
 默认示例完全离线，数据库使用本地文件型 H2。启动一个 JAR 即可打开演示页，不需要数据库服务器、模型密钥或 Node.js。
+
+[Run locally / 本地运行](#运行) · [Definition example / 定义示例](#定义示例) · [API](docs/api.md)
+
+Windows 可双击根目录 `start.bat`：自动查找 Java 21+。服务就绪后自动打开浏览器；保持终端窗口打开，按 Ctrl+C 停止服务。再次双击会打开已运行的同名服务。缺少 JAR 时会提示先构建；启动失败保留错误信息。`start.bat -Check` 仅检查启动环境。
 
 ## 运行
 
