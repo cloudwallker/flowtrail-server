@@ -16,6 +16,8 @@ This learning project executes nodes serially in dependency order. The default d
 
 Windows 可双击根目录 `start.bat`：自动查找 Java 21+。服务就绪后自动打开浏览器；保持终端窗口打开，按 Ctrl+C 停止服务。再次双击会打开已运行的同名服务。缺少 JAR 时会提示先构建；启动失败保留错误信息。`start.bat -Check` 仅检查启动环境。
 
+![flowtrail-server](docs/images/cartoon-infographic.png)
+
 ## 运行
 
 源码构建需要 JDK 21+、Maven 3.8.5+：
