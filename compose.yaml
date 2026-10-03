@@ -1,0 +1,19 @@
+services:
+  mysql:
+    image: mysql:8.4
+    ports:
+      - "127.0.0.1:13306:3306"
+    environment:
+      MYSQL_DATABASE: flowtrail_runtime
+      MYSQL_USER: flowtrail
+      MYSQL_PASSWORD: ${FLOWTRAIL_DB_PASSWORD:?Set FLOWTRAIL_DB_PASSWORD for the local database}
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    volumes:
+      - flowtrail_mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+volumes:
+  flowtrail_mysql:

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,9 +48,17 @@ public class FlowTrailController {
   }
 
   @PostMapping("/workflows/{id}/runs")
-  public Run executeWorkflow(
-      @PathVariable String id, @RequestBody(required = false) RunRequest request) {
-    return service.executeWorkflow(id, request);
+  public ResponseEntity<Run> executeWorkflow(
+      @PathVariable String id,
+      @RequestBody(required = false) RunRequest request,
+      @RequestHeader(value = "Idempotency-Key", required = false) String key) {
+    Run run = service.executeWorkflow(id, request, key);
+    return ResponseEntity.accepted().header("Location", "/api/runs/" + run.id()).body(run);
+  }
+
+  @PostMapping("/runs/{id}/resume")
+  public ResponseEntity<Run> resume(@PathVariable String id) {
+    return ResponseEntity.accepted().body(service.resume(id));
   }
 
   @GetMapping("/runs/{id}")

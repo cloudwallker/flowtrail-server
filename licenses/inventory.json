@@ -1,7 +1,34 @@
 [
   {
+    "jar": "HdrHistogram-2.2.2.jar",
+    "sha256": "22d1d4316c4ec13a68b559e98c8256d69071593731da96136640f864fa14fad8",
+    "licenseResources": [
+      "HdrHistogram-2.2.2/META-INF__LICENSE.txt"
+    ]
+  },
+  {
     "jar": "HikariCP-6.3.3.jar",
     "sha256": "709f378c05756280939ce50fc1b1f1a53bb8e1899dc1b249f21f12703640b48b",
+    "licenseResources": []
+  },
+  {
+    "jar": "LatencyUtils-2.0.3.jar",
+    "sha256": "a32a9ffa06b2f4e01c5360f8f9df7bc5d9454a5d373cd8f361347fa5a57165ec",
+    "licenseResources": []
+  },
+  {
+    "jar": "ST4-4.3.4.jar",
+    "sha256": "f927ac384c46d749f8b5ec68972a53aed21e00313509299616edb73bfa15ff33",
+    "licenseResources": []
+  },
+  {
+    "jar": "antlr-runtime-3.5.3.jar",
+    "sha256": "68bf9f5a33dfcb34033495c587e6236bef4e37aa6612919f5b1e843b90669fb9",
+    "licenseResources": []
+  },
+  {
+    "jar": "antlr4-runtime-4.13.1.jar",
+    "sha256": "54665d2838cc66458343468efc539e454fc95b46a8a04b13c6ac43fc9be63505",
     "licenseResources": []
   },
   {
@@ -11,6 +38,26 @@
       "classmate-1.7.3/META-INF__LICENSE",
       "classmate-1.7.3/META-INF__NOTICE"
     ]
+  },
+  {
+    "jar": "context-propagation-1.1.4.jar",
+    "sha256": "d9878c7286014663ff6b33321eb21197a9d1d75e5c8ddbe1e9e1823c17a4e8cf",
+    "licenseResources": [
+      "context-propagation-1.1.4/META-INF__LICENSE",
+      "context-propagation-1.1.4/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "flyway-core-11.7.2.jar",
+    "sha256": "ff01fab3bcfd79e9345df191ecf82cbe1f9f65a757266158bd691564b1c1282c",
+    "licenseResources": [
+      "flyway-core-11.7.2/META-INF__LICENSE.txt"
+    ]
+  },
+  {
+    "jar": "flyway-mysql-11.7.2.jar",
+    "sha256": "16b6b74800dfcbae21b7d7539c108ad573ead462840e357fc9ffd9fb7129bdb3",
+    "licenseResources": []
   },
   {
     "jar": "h2-2.3.232.jar",
@@ -47,6 +94,11 @@
     ]
   },
   {
+    "jar": "itu-1.14.0.jar",
+    "sha256": "5cf40ab0cc77828ab2b875b1f3ecd71c8295d7721933476abc2e08fddcea164a",
+    "licenseResources": []
+  },
+  {
     "jar": "jackson-annotations-2.19.4.jar",
     "sha256": "ab26383fa3c10c0df1ffd1bb035d81161c059b1af71927d73c24473c058baa16",
     "licenseResources": [
@@ -71,6 +123,22 @@
     ]
   },
   {
+    "jar": "jackson-dataformat-toml-2.19.4.jar",
+    "sha256": "e6cbf9e55275ed5765b30bc06cf5b1f245047500060de361a01f60ca5a01ccfb",
+    "licenseResources": [
+      "jackson-dataformat-toml-2.19.4/META-INF__LICENSE",
+      "jackson-dataformat-toml-2.19.4/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "jackson-dataformat-yaml-2.19.4.jar",
+    "sha256": "998e652806c49ca59e2b6432c4edc37580c4702cb6189d10e6053d0b7982c2e7",
+    "licenseResources": [
+      "jackson-dataformat-yaml-2.19.4/META-INF__LICENSE",
+      "jackson-dataformat-yaml-2.19.4/META-INF__NOTICE"
+    ]
+  },
+  {
     "jar": "jackson-datatype-jdk8-2.19.4.jar",
     "sha256": "c0e0dc3039f9a37a099b2602838f833ea8c15c56445a0eb5463d0c7e0c355da2",
     "licenseResources": [
@@ -84,6 +152,13 @@
     "licenseResources": [
       "jackson-datatype-jsr310-2.19.4/META-INF__LICENSE",
       "jackson-datatype-jsr310-2.19.4/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "jackson-module-jsonSchema-2.19.4.jar",
+    "sha256": "bf018ef5cb79d4222c1d1bbf8532ca75b0c24be00a6ed22ddc536f015ecd0b71",
+    "licenseResources": [
+      "jackson-module-jsonSchema-2.19.4/META-INF__LICENSE"
     ]
   },
   {
@@ -110,6 +185,31 @@
   {
     "jar": "jboss-logging-3.6.2.Final.jar",
     "sha256": "f423e07bffce73bf2b6cc872f30981c06fe9cfd5a86a0b4f5fbdd11cfe0148e0",
+    "licenseResources": []
+  },
+  {
+    "jar": "json-schema-validator-2.0.0.jar",
+    "sha256": "ee940241043ae01801df5954bc3744bf723c449ff0da719f97e1b9a6889739d7",
+    "licenseResources": []
+  },
+  {
+    "jar": "jsonschema-generator-4.38.0.jar",
+    "sha256": "ade4aeb301db4028ac6bcba016c31405677e37aae6eebaf13c99de3fdb3531b4",
+    "licenseResources": []
+  },
+  {
+    "jar": "jsonschema-module-jackson-4.38.0.jar",
+    "sha256": "36fbd3f1c27379c3ba8420ac2cb0b42411f7bc3b3df8bdd11d8d7e024a1c28ca",
+    "licenseResources": []
+  },
+  {
+    "jar": "jsonschema-module-swagger-2-4.38.0.jar",
+    "sha256": "b76c0df657bcf88cca46d7ad540938552e10127a7c28d2136f62b631666997c1",
+    "licenseResources": []
+  },
+  {
+    "jar": "jtokkit-1.1.0.jar",
+    "sha256": "1501ce0259ab897c6746ccfafa1d208acd404fb17e1ac62e157172f2678b1183",
     "licenseResources": []
   },
   {
@@ -146,6 +246,16 @@
     "licenseResources": []
   },
   {
+    "jar": "mcp-core-0.18.3.jar",
+    "sha256": "eef058d9a23cd921be08503f38cbd6997407c313bc68a5f8fc4f6a6001845e27",
+    "licenseResources": []
+  },
+  {
+    "jar": "mcp-json-jackson2-0.18.3.jar",
+    "sha256": "d1e118f4457b8e4649031e90b1ffd41ffee4f88258411860fbf40df9ac1b794f",
+    "licenseResources": []
+  },
+  {
     "jar": "micrometer-commons-1.15.9.jar",
     "sha256": "3fab2a0ff208d7cb52aee923c46db6451641037ec7c74d06cb03cc3689c39771",
     "licenseResources": [
@@ -154,11 +264,38 @@
     ]
   },
   {
+    "jar": "micrometer-core-1.15.9.jar",
+    "sha256": "53f35fc706ab2d487897d786c05c797148401ba8ed3ffc50c9790c04fa678552",
+    "licenseResources": [
+      "micrometer-core-1.15.9/META-INF__LICENSE",
+      "micrometer-core-1.15.9/META-INF__NOTICE"
+    ]
+  },
+  {
     "jar": "micrometer-observation-1.15.9.jar",
     "sha256": "9d2406587485b228abd64a90f7e8059a3fd0251f2289e931ae9c5286eaebfc1e",
     "licenseResources": [
       "micrometer-observation-1.15.9/META-INF__LICENSE",
       "micrometer-observation-1.15.9/META-INF__NOTICE"
+    ]
+  },
+  {
+    "jar": "mysql-connector-j-9.6.0.jar",
+    "sha256": "66df1d453789dc8cb759a7dc17f58646893bf28483f262328650f170472a6ead",
+    "licenseResources": [
+      "mysql-connector-j-9.6.0/LICENSE"
+    ]
+  },
+  {
+    "jar": "reactive-streams-1.0.4.jar",
+    "sha256": "f75ca597789b3dac58f61857b9ac2e1034a68fa672db35055a8fb4509e325f28",
+    "licenseResources": []
+  },
+  {
+    "jar": "reactor-core-3.7.16.jar",
+    "sha256": "1b22531e50a243d486b9a9f95bf21b4ddb0d0ebcae4e02584a91912d1dec5a0c",
+    "licenseResources": [
+      "reactor-core-3.7.16/META-INF__LICENSE"
     ]
   },
   {
@@ -171,6 +308,36 @@
   {
     "jar": "snakeyaml-2.4.jar",
     "sha256": "ef779af5d29a9dde8cc70ce0341f5c6f7735e23edff9685ceaa9d35359b7bb7f",
+    "licenseResources": []
+  },
+  {
+    "jar": "spring-ai-client-chat-1.1.8.jar",
+    "sha256": "37bd261a6fc4791fb671d20a0a296f7da0490eb0d128194a41c475f063838881",
+    "licenseResources": []
+  },
+  {
+    "jar": "spring-ai-commons-1.1.8.jar",
+    "sha256": "3aa084fbb5676af48312feb88f2fe565175e84b5074cae37ed2834662a365258",
+    "licenseResources": []
+  },
+  {
+    "jar": "spring-ai-model-1.1.8.jar",
+    "sha256": "98c2c6d58fb9d52f7a451bac17512d8d410034ac5d47457aafb15f53d2ec456a",
+    "licenseResources": []
+  },
+  {
+    "jar": "spring-ai-openai-1.1.8.jar",
+    "sha256": "17705f1bddead09d7e546ab32249e18c7a3f89c2895aa5e48da0365e067680b9",
+    "licenseResources": []
+  },
+  {
+    "jar": "spring-ai-retry-1.1.8.jar",
+    "sha256": "145ddf98f95a68845c95615a74d2faec627bf3aac3a03fd027e9194517617a7b",
+    "licenseResources": []
+  },
+  {
+    "jar": "spring-ai-template-st-1.1.8.jar",
+    "sha256": "873c8ceee840d5a354d018994ceacaa29df44adeafd360349a6c645c7508f0ca",
     "licenseResources": []
   },
   {
@@ -222,6 +389,14 @@
     ]
   },
   {
+    "jar": "spring-context-support-6.2.16.jar",
+    "sha256": "d292ddb7eb99eda8adddd9c818a69bb06d39b50405473e9fded7dd268183175c",
+    "licenseResources": [
+      "spring-context-support-6.2.16/META-INF__license.txt",
+      "spring-context-support-6.2.16/META-INF__notice.txt"
+    ]
+  },
+  {
     "jar": "spring-core-6.2.16.jar",
     "sha256": "da9b13d75d42d7dd4e6a3a5a16c9bd703cc4a489eaa5effb860d67957c3752c2",
     "licenseResources": [
@@ -254,6 +429,22 @@
     ]
   },
   {
+    "jar": "spring-messaging-6.2.16.jar",
+    "sha256": "b1a39ad392065b40223e5405d498f5661de353f58230d733d4febad7b36c5d79",
+    "licenseResources": [
+      "spring-messaging-6.2.16/META-INF__license.txt",
+      "spring-messaging-6.2.16/META-INF__notice.txt"
+    ]
+  },
+  {
+    "jar": "spring-retry-2.0.12.jar",
+    "sha256": "15e5b238080e05b97d7603472887d658fc018340539b3f0777bc92445bf91dad",
+    "licenseResources": [
+      "spring-retry-2.0.12/META-INF__LICENSE-2.0.txt",
+      "spring-retry-2.0.12/META-INF__NOTICE.txt"
+    ]
+  },
+  {
     "jar": "spring-tx-6.2.16.jar",
     "sha256": "af5bc791d25429fd30874994b40b9a237f66600cc56f930fa970c27e388c5af1",
     "licenseResources": [
@@ -270,11 +461,27 @@
     ]
   },
   {
+    "jar": "spring-webflux-6.2.16.jar",
+    "sha256": "ddb665d1ac714c91b1c01a3261ca5ed45048ac578924efbfb39064ff50c0ec3b",
+    "licenseResources": [
+      "spring-webflux-6.2.16/META-INF__license.txt",
+      "spring-webflux-6.2.16/META-INF__notice.txt"
+    ]
+  },
+  {
     "jar": "spring-webmvc-6.2.16.jar",
     "sha256": "6be126bba6c6326901465dee7b4ceb8d97f1a2a59d7e5f5338e157f7239cfa97",
     "licenseResources": [
       "spring-webmvc-6.2.16/META-INF__license.txt",
       "spring-webmvc-6.2.16/META-INF__notice.txt"
+    ]
+  },
+  {
+    "jar": "swagger-annotations-jakarta-2.2.38.jar",
+    "sha256": "cf15aa4ab7e8c747d7b3d979660a49320ea56c0dc88b7021e48cc909c13b997b",
+    "licenseResources": [
+      "swagger-annotations-jakarta-2.2.38/META-INF__LICENSE",
+      "swagger-annotations-jakarta-2.2.38/META-INF__NOTICE"
     ]
   },
   {
@@ -300,5 +507,10 @@
       "tomcat-embed-websocket-10.1.52/META-INF__LICENSE",
       "tomcat-embed-websocket-10.1.52/META-INF__NOTICE"
     ]
+  },
+  {
+    "jar": "validation-api-1.1.0.Final.jar",
+    "sha256": "f39d7ba7253e35f5ac48081ec1bc28c5df9b32ac4b7db20853e5a8e76bf7b0ed",
+    "licenseResources": []
   }
 ]

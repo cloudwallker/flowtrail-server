@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-03",
+  "timezone": "Asia/Shanghai",
+  "version": "0.2.0",
+  "baselineCommit": "0d736bf",
+  "sourceState": "local-working-tree",
+  "jdk": "21.0.1",
+  "maven": "3.9.9",
+  "sourceFileCount": 74,
+  "sourceSha256": "7cff21c8ab25b279b1ea4de5200f17708df532e97e175ecddae24fe13b5b4d7d",
+  "jar": "flowtrail-server.jar",
+  "jarSha256": "ce2c580c8edc142393a2880acbc8fdfb18bfbb471eedf773e31c078c920c6dbc",
+  "junit": {
+    "tests": 48,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "testSuites": [
+    {
+      "name": "dev.flowtrail.CheckpointLeaseTest",
+      "tests": 3
+    },
+    {
+      "name": "dev.flowtrail.ExternalWriteTest",
+      "tests": 2
+    },
+    {
+      "name": "dev.flowtrail.FailureConvergenceTest",
+      "tests": 2
+    },
+    {
+      "name": "dev.flowtrail.FlowTrailApiTest",
+      "tests": 9
+    },
+    {
+      "name": "dev.flowtrail.HttpNodeIntegrationTest",
+      "tests": 8
+    },
+    {
+      "name": "dev.flowtrail.InterruptedWriteConvergenceTest",
+      "tests": 4
+    },
+    {
+      "name": "dev.flowtrail.ModelCredentialBindingTest",
+      "tests": 3
+    },
+    {
+      "name": "dev.flowtrail.ModelProtocolTest",
+      "tests": 2
+    },
+    {
+      "name": "dev.flowtrail.MySqlCheckpointTest",
+      "tests": 2
+    },
+    {
+      "name": "dev.flowtrail.PersistenceReopenTest",
+      "tests": 1
+    },
+    {
+      "name": "dev.flowtrail.QueuedFailureTest",
+      "tests": 1
+    },
+    {
+      "name": "dev.flowtrail.RuntimeAcceptanceTest",
+      "tests": 3
+    },
+    {
+      "name": "dev.flowtrail.RuntimeLimitsTest",
+      "tests": 1
+    },
+    {
+      "name": "dev.flowtrail.validation.WorkflowValidatorTest",
+      "tests": 7
+    }
+  ]
+}

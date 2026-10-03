@@ -17,3 +17,20 @@ Content-Type: application/json
 
 ### 查看工作流
 GET {{base}}/api/workflows
+
+### 创建运行：替换 workflowId，202 后用返回的 run id 查询
+POST {{base}}/api/workflows/{{workflowId}}/runs
+Content-Type: application/json
+Idempotency-Key: hello-demo-1
+
+{"inputs":{"name":"学习者"}}
+
+### 查看节点状态和尝试历史
+GET {{base}}/api/runs/{{runId}}
+
+### 事件重放
+GET {{base}}/api/runs/{{runId}}/events?after=0
+Accept: text/event-stream
+
+### 显式恢复
+POST {{base}}/api/runs/{{runId}}/resume

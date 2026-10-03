@@ -14,21 +14,15 @@
     <fileSet>
       <directory>examples</directory>
       <outputDirectory>examples</outputDirectory>
-      <includes>
-        <include>api.http</include>
-        <include>hello-workflow.json</include>
-        <include>run-inputs.json</include>
-      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>scripts</directory>
+      <outputDirectory>scripts</outputDirectory>
+      <excludes><exclude>__pycache__/**</exclude><exclude>*.pyc</exclude></excludes>
     </fileSet>
     <fileSet>
       <directory>docs</directory>
       <outputDirectory>docs</outputDirectory>
-      <includes>
-        <include>api.md</include>
-        <include>backend-report.md</include>
-        <include>design.md</include>
-        <include>learning-notes.md</include>
-      </includes>
     </fileSet>
     <fileSet>
       <directory>licenses</directory>
@@ -38,10 +32,12 @@
       <directory>.</directory>
       <outputDirectory>/</outputDirectory>
       <includes>
-        <include>start.bat</include><include>README.md</include>
+        <include>start.bat</include><include>README.md</include><include>README_ZH.md</include>
         <include>LICENSE</include>
         <include>THIRD_PARTY_NOTICES.md</include>
         <include>.env.example</include>
+        <include>CHANGELOG.md</include>
+        <include>compose.yaml</include>
       </includes>
     </fileSet>
   </fileSets>

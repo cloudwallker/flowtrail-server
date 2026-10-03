@@ -1,112 +1,128 @@
 # FlowTrail Server
 
-### Local workflows with inspectable execution history
+### Recoverable Java workflows with observable execution and safe restart handling
 
-**Define text and HTTP steps as a JSON dependency graph, pass data between nodes, and inspect each run in a local web interface. Workflow definitions and execution history persist across restarts.**
+**Orchestrate TEXT, HTTP, and LLM nodes with JSON DAGs, then inspect parallel execution, model streams, and attempt history in a local web UI. Checkpoints, persistent event replay, and external-write reconciliation make recovery traceable.**
 
-**用 JSON 描述文本与 HTTP 步骤的依赖关系，在节点间传递数据，通过本地网页查看每次执行；工作流定义与运行历史在重启后仍然保留。**
+English | [中文](README_ZH.md)
 
-This learning project executes nodes serially in dependency order. The default demo runs offline from a single JAR with an embedded database.
+[Quick Start](#quick-start) · [Report Demo](#report-demo) · [Features](#features) · [Documentation and Verification](#documentation-and-verification)
 
-面向工作流学习，按依赖顺序串行执行节点。
+<img src="docs/images/monitor-result.jpg" alt="Actual web execution: successful mock summary, node attempt, and caught-up events" width="320">
 
-默认示例完全离线，数据库使用本地文件型 H2。启动一个 JAR 即可打开演示页，不需要数据库服务器、模型密钥或 Node.js。
+*Actual 0.2.0 web execution: a successful mock document summary with its node attempt and caught-up event stream. See the [full-page screenshot](docs/images/monitor-demo.jpg).*
 
-[Run locally / 本地运行](#运行) · [Definition example / 定义示例](#定义示例) · [API](docs/api.md)
+Built with Java 21, Spring Boot, and Spring AI. Runs are persisted before background execution starts. Independent branches execute concurrently, and downstream nodes become eligible only after successful results are committed.
 
-Windows 可双击根目录 `start.bat`：自动查找 Java 21+。服务就绪后自动打开浏览器；保持终端窗口打开，按 Ctrl+C 停止服务。再次双击会打开已运行的同名服务。缺少 JAR 时会提示先构建；启动失败保留错误信息。`start.bat -Check` 仅检查启动环境。
+## Quick Start
 
-![flowtrail-server](docs/images/cartoon-infographic.png)
-
-## 运行
-
-源码构建需要 JDK 21+、Maven 3.8.5+：
+Build from source with JDK 21+ and Maven 3.8.5+:
 
 ```sh
-mvn clean package
+mvn clean verify
 java -jar target/flowtrail-server.jar
 ```
 
-打开 **http://127.0.0.1:18081**。页面已预填离线示例，点击“校验定义”，再点击“保存并运行”。两个节点会按依赖顺序执行，结果自动保存。
+Open **http://127.0.0.1:18081**. The default file-backed H2 database supports offline text workflows and explicitly labeled mock templates. Stream a summary without running additional services.
 
-也可以在 PowerShell 使用 `bin/start.ps1`，在 Linux/macOS 使用 `sh bin/start.sh`。启动器优先采用 `JAVA_HOME` 指向的 JDK，并固定以项目目录作为工作目录。
+On Windows, use `start.bat` or `bin/start.ps1`; on Linux/macOS, use `sh bin/start.sh`. Launchers prefer `JAVA_HOME` and set the project working directory. The build creates `target/flowtrail-server-dist.zip`; the extracted package requires only JDK 21+. Run `start.bat -Check` to check the environment.
 
-构建会生成 `target/flowtrail-server-dist.zip`。解压后执行 `bin/start.ps1` 或 `sh bin/start.sh`，只需 JDK 21，不再需要 Maven。
+## Report Demo
 
-## 做了什么
+Start the local report service in another terminal:
 
-| 能力 | 行为 |
-| --- | --- |
-| 定义校验 | 拒绝重复 ID、未知依赖、自依赖、环和非法引用 |
-| 拓扑排序 | 按依赖顺序执行，定义顺序不必与执行顺序一致 |
-| 变量传递 | `${input.name}` 读取输入，`${node.output}` 读取祖先节点输出 |
-| TEXT 节点 | 替换引用后输出文本 |
-| HTTP 节点 | GET/POST、完整响应超时、256 KiB 正文上限 |
-| 失败传播 | 当前节点失败后，剩余节点标为 SKIPPED |
-| 持久化 | 工作流和完整运行记录保存到 H2，重启后仍可查看 |
-| 演示页 | 编辑定义、校验、执行、节点输出及历史回看 |
-
-首版按拓扑顺序**串行执行**，没有并行调度、条件分支、重试、暂停恢复或图形拖拽。HTTP 调用不占用数据库事务；这是小型学习服务，不是企业工作流平台。
-
-## 定义示例
-
-```json
-{
-  "name": "hello-dag",
-  "nodes": [
-    {"id":"summary","type":"TEXT","dependsOn":["greeting"],"text":"完成：${greeting.output}"},
-    {"id":"greeting","type":"TEXT","dependsOn":[],"text":"你好，${input.name}！"}
-  ]
-}
+```sh
+python scripts/mock_reports.py --port 18082 --database target/demo-reports.sqlite
 ```
 
-执行输入：`{"inputs":{"name":"学习者"}}`。即使 summary 写在前面，也必须先执行 greeting。节点只能引用其依赖图中的祖先；缺失输入会在执行任何节点前被发现。
+Select the parallel business report mock template in the web UI, load it, validate it, and run it. The workflow fetches synthetic metrics, generates a summary and risks concurrently, combines them into a report, and saves it to a local service with an idempotency lookup protocol. The template is labeled mock; events and node execution come from the actual runtime.
 
-每个工作流 1–30 个节点。HTTP 方法只支持 GET/POST，超时默认 3000ms，范围 100–30000ms；不自动跟随重定向或重试。完整定义与错误协议见 [设计说明](docs/design.md) 和 [API 文档](docs/api.md)。
-单个插值结果上限为 262144 个 UTF-16 code unit，超过上限会记录为节点失败，避免引用重复导致内存膨胀。
+```mermaid
+flowchart LR
+  A[Project inputs] --> B[HTTP metrics]
+  B --> C[LLM summary]
+  B --> D[LLM risks]
+  C --> E[TEXT report]
+  D --> E
+  E --> F[HTTP idempotent save]
+```
 
-## 用 API 复现
+Other templates cover document summaries, API data interpretation, and offline text. LLM nodes select `mock-demo` or `live-default` through `modelRef`. The Spring AI endpoint, model, and deployment version are fixed when a run is created; credentials come from environment variables, and errors are reported explicitly.
 
-PowerShell：
+## Features
+
+| Capability | Behavior |
+| --- | --- |
+| JSON DSL and DAG validation | Rejects duplicate IDs, cycles, unknown dependencies, non-ancestor references, and missing inputs before execution |
+| Node registry | TEXT, HTTP, and LLM share an execution interface with immutable run inputs and ancestor-result snapshots |
+| Bounded parallel execution | Defaults to 8 workers and 32 queued tasks per instance, with at most 4 submitted tasks per run |
+| Failure and retry handling | Stops new successors while started tasks settle; retryable read-only failures receive at most two additional attempts |
+| Checkpoints and takeover | Commits successful nodes incrementally; database-time leases and owner/epoch checks fence stale holders |
+| External-write reconciliation | Freezes requests and stable keys; tracks PREPARED / UNKNOWN / CONFIRMED / DECLINED and looks up uncertain results by their original key |
+| Persistent SSE | Persists events before delivery; supports run-local sequence IDs, Last-Event-ID replay, and model output separated by attempt |
+| Web monitor | Provides templates, inputs, node and attempt results, streaming fragments, history, and explicit resume |
+
+Interrupted LLM nodes regenerate in a new attempt; committed successful outputs are reused. A POST without a reliable reconciliation protocol enters `MANUAL_REVIEW`. A lease cannot retract an HTTP request already sent, and idempotency depends on the downstream service honoring its declared contract.
+
+## Asynchronous API
 
 ```powershell
 $base = 'http://127.0.0.1:18081'
 $definition = Get-Content examples/hello-workflow.json -Raw -Encoding UTF8
 $workflow = Invoke-RestMethod "$base/api/workflows" -Method Post -ContentType 'application/json; charset=utf-8' -Body ([Text.Encoding]::UTF8.GetBytes($definition))
 $body = Get-Content examples/run-inputs.json -Raw -Encoding UTF8
-Invoke-RestMethod "$base/api/workflows/$($workflow.id)/runs" -Method Post -ContentType 'application/json; charset=utf-8' -Body ([Text.Encoding]::UTF8.GetBytes($body))
+$run = Invoke-RestMethod "$base/api/workflows/$($workflow.id)/runs" -Method Post -Headers @{'Idempotency-Key'='hello-demo-1'} -ContentType 'application/json; charset=utf-8' -Body ([Text.Encoding]::UTF8.GetBytes($body))
+Invoke-RestMethod "$base/api/runs/$($run.id)"
 ```
 
-`examples/api.http` 也可在支持 HTTP Client 的 IDE 中运行。运行接口同步返回执行记录，工作流业务失败时 HTTP 仍为 200，应检查 `status` 字段；无效定义或输入返回 400，找不到记录返回 404。
+Run creation returns **202 Accepted + Run** and a `Location` header. Within a workflow, the same key and inputs return the existing run; changed inputs return 409. Poll or use SSE to wait for a terminal status. This changes the synchronous response behavior of 0.1; see the [migration guide](docs/migration-0.2.md) and [API reference](docs/api.md).
 
-## 配置与数据
+## MySQL and Configuration
 
-默认文件数据库设置 `WRITE_DELAY=0`，关闭 H2 的提交写入延迟。自定义数据库 URL 时请保留该设置；这不等于对硬件故障或断电作保证。参见 [H2 WRITE_DELAY](https://h2database.com/html/commands.html#set_write_delay)。
+The default H2 path is `./data/flowtrail-runtime-v2`; the previous `./data/flowtrail` database is preserved. MySQL tables are managed with Flyway:
 
-| 环境变量 | 默认 |
+```powershell
+$env:FLOWTRAIL_DB_PASSWORD = 'replace-with-a-local-password'
+docker compose up -d mysql
+$env:SPRING_PROFILES_ACTIVE = 'mysql'
+$env:FLOWTRAIL_DB_URL = 'jdbc:mysql://127.0.0.1:13306/flowtrail_runtime?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true'
+$env:FLOWTRAIL_DB_USER = 'flowtrail'
+java -jar target/flowtrail-server.jar
+```
+
+| Environment variable | Purpose or default |
 | --- | --- |
-| SERVER_ADDRESS | 127.0.0.1 |
-| SERVER_PORT | 18081 |
-| FLOWTRAIL_DB_URL | jdbc:h2:file:./data/flowtrail;DB_CLOSE_ON_EXIT=FALSE;WRITE_DELAY=0 |
+| `SERVER_ADDRESS` / `SERVER_PORT` | `127.0.0.1` / `18081` |
+| `FLOWTRAIL_DB_URL` / `FLOWTRAIL_DB_USER` / `FLOWTRAIL_DB_PASSWORD` | JDBC connection settings |
+| `FLOWTRAIL_MODEL_BASE_URL` | OpenAI-compatible endpoint |
+| `FLOWTRAIL_MODEL_NAME` / `FLOWTRAIL_MODEL_VERSION` | Model and deployment version |
+| `FLOWTRAIL_MODEL_API_KEY` | Deployment credential; excluded from the DSL, events, and configuration snapshots |
 
-`.env.example` 只说明配置，不会被自动加载。通过 shell 或 IDE 的环境变量设置生效。相对数据库路径基于进程工作目录，启动器会固定该目录。`data/` 不纳入 Git。
+`.env.example` documents configuration and is not loaded automatically by the launchers. Local data, runtime state, and build logs are excluded from version control. The server listens on localhost by default. It currently has no authentication or tenant isolation and accepts trusted workflow definitions.
 
-服务没有认证和租户隔离，默认只监听本机。HTTP 节点代表主动网络操作，请只执行可信定义；POST 可能改变目标服务状态。不要直接修改监听地址后部署到公网。
+## Documentation and Verification
 
-## 构建与学习
+The complete local 0.2.0 verification passed **48 Maven tests**, 7 web-state regression tests, and 5 report-service HTTP tests. The final JAR passed five recovery scenarios on MySQL, including two that forcibly terminated and restarted the Java process. These cover committed-checkpoint reuse, model-attempt isolation, SSE replay, and external-write reconciliation after a lost response. Environment and results are recorded in the [verification report](docs/verification-0.2.md).
 
 ```sh
-mvn clean package
+mvn clean verify
+python scripts/smoke.py
+python scripts/recovery_smoke.py
+python -m unittest discover -s scripts -p test_mock_reports.py
+node --test scripts/ui-state.test.cjs scripts/ui-replay.test.cjs
 ```
 
-构建后可按上文启动服务，运行 `examples/api.http` 或 PowerShell API 示例。
+MySQL JUnit tests use `FLOWTRAIL_TEST_MYSQL_URL / USER / PASSWORD`. For process recovery tests, set `FLOWTRAIL_TEST_DB_URL / USER / PASSWORD` and add `--mysql`; the isolated database must be local and its name must end in `_test`.
 
-学习入口：
+- [Durable runtime implementation](docs/runtime-implementation.md)
+- [API reference](docs/api.md) and [migration guide](docs/migration-0.2.md)
+- [Project capabilities and evidence](docs/resume-evidence.md)
+- [Local verification report](docs/verification-0.2.md) and [changelog](CHANGELOG.md)
 
-- [设计取舍](docs/learning-notes.md)：DAG、输入预检、状态模型、网络与事务边界。
-- [API](docs/api.md)：请求、响应与错误。
-- [后端实现说明](docs/backend-report.md)：执行、持久化与错误处理的实现细节。
+The linked implementation documents are currently in Chinese.
 
-初始版本在 AI 编程助手协助下实现。后续展示应基于自己的复现、解释与改进，避免把计划中的功能描述为已实现。适合继续练习的方向：并行执行、条件节点、取消与恢复，以及调用已有 CLI 的外部客户端。
+## License and Attribution
 
-代码采用 [MIT](LICENSE)，第三方依赖保留各自许可，见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+The initial version was implemented with assistance from an AI coding assistant. The design and demonstrations can be reproduced from the source code and recorded procedures above.
+
+Project code is licensed under [MIT](LICENSE). Dependencies retain their own licenses; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

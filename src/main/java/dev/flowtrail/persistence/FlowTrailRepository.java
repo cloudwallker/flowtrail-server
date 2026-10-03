@@ -39,7 +39,7 @@ public class FlowTrailRepository {
         workflow.id(),
         workflow.name(),
         writeJson(workflow.nodes()),
-        OffsetDateTime.ofInstant(workflow.createdAt(), ZoneOffset.UTC));
+        java.sql.Timestamp.from(workflow.createdAt()));
   }
 
   public List<Workflow> findAllWorkflows() {
@@ -92,7 +92,7 @@ public class FlowTrailRepository {
         resultSet.getString("id"),
         resultSet.getString("name"),
         readJson(resultSet.getString("nodes_json"), NODE_DEFINITIONS),
-        resultSet.getObject("created_at", OffsetDateTime.class).toInstant());
+        resultSet.getTimestamp("created_at").toInstant());
   }
 
   private Run mapRun(ResultSet resultSet, int rowNumber) throws SQLException {

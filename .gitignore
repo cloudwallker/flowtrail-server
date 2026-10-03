@@ -46,8 +46,6 @@ superpowers/
 
 # Local development material
 **/superpowers/
-**/tests/
-**/test/
 /.github/
 /benchmarks/
 /artifacts/
@@ -55,3 +53,5 @@ superpowers/
 /AGENTS.md
 /docs/publishing.md
 /docs/verification.md
+target-*/
+.flowtrail/

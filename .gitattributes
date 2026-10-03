@@ -2,3 +2,5 @@
 *.sh text eol=lf
 *.ps1 text eol=crlf
 
+# Preserve upstream license and notice bytes for hash verification.
+licenses/** -text

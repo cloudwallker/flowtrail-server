@@ -12,4 +12,21 @@ public record NodeDefinition(
     String method,
     Map<String, String> headers,
     String body,
-    Integer timeoutMs) {}
+    Integer timeoutMs,
+    String modelRef,
+    String systemPrompt,
+    String userPrompt,
+    IdempotencyPolicy idempotency) {
+  public NodeDefinition(
+      String id,
+      NodeType type,
+      List<String> dependsOn,
+      String text,
+      String url,
+      String method,
+      Map<String, String> headers,
+      String body,
+      Integer timeoutMs) {
+    this(id, type, dependsOn, text, url, method, headers, body, timeoutMs, null, null, null, null);
+  }
+}

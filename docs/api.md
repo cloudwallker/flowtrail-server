@@ -1,179 +1,91 @@
-# FlowTrail Server API
+# FlowTrail Server 0.2 API
 
-默认地址为 `http://127.0.0.1:18081`。所有请求和响应都使用 JSON，时间字段采用 ISO-8601 UTC 格式。
+默认地址 `http://127.0.0.1:18081`。JSON 使用严格字段类型，拒绝未知字段和重复属性；时间为 ISO-8601 UTC。
 
-## 健康检查
+| 接口 | 响应 |
+| --- | --- |
+| `GET /api/health` | 200，`{"status":"UP","service":"flowtrail-server"}` |
+| `POST /api/workflows/validate` | 200，`valid` 和稳定拓扑 `order` |
+| `POST /api/workflows` | 201，保存后的 Workflow |
+| `GET /api/workflows` / `{id}` | 工作流列表 / 单个工作流 |
+| `POST /api/workflows/{id}/runs` | 202，持久创建的 Run；`Location: /api/runs/{runId}` |
+| `GET /api/runs/{id}` | 当前状态、节点输出和每次尝试 |
+| `GET /api/workflows/{id}/runs` | 最近 50 个运行，开始时间降序 |
+| `POST /api/runs/{id}/resume` | 202，显式恢复或幂等返回；有效租约为 409 |
+| `GET /api/runs/{id}/events` | `text/event-stream`，持久化事件重放 |
+| `GET /api/runs/{id}/events/history?after=0` | 游标之后最多 1000 个事件，继续分页需传最后 seq |
 
-```http
-GET /api/health
-```
-
-```json
-{"status":"UP","service":"flowtrail-server"}
-```
-
-## 工作流
-
-创建工作流：
-
-```http
-POST /api/workflows
-Content-Type: application/json
-```
+## 定义
 
 ```json
 {
-  "name": "greeting",
+  "name": "summary-demo",
   "nodes": [
-    {
-      "id": "summary",
-      "type": "TEXT",
-      "dependsOn": ["greeting"],
-      "text": "${greeting.output} Done."
-    },
-    {
-      "id": "greeting",
-      "type": "TEXT",
-      "text": "Hello ${input.name}"
-    }
+    {"id":"text","type":"TEXT","text":"${input.document}"},
+    {"id":"summary","type":"LLM","dependsOn":["text"],"modelRef":"mock-demo","systemPrompt":"归纳业务文档","userPrompt":"${text.output}"}
   ]
 }
 ```
 
-成功返回 `201` 和持久化后的 `Workflow`：
+1–30 个节点，id 匹配 `[A-Za-z][A-Za-z0-9_]{0,39}`，`dependsOn` 默认为空。引用仅允许 `${input.key}` 和 `${ancestor.output}`，插值只解释一遍。每个配置字符串最多 20000 字符，完成插值结果最多 262144 UTF-16 code unit。
 
-```json
-{
-  "id": "3f357d30-81eb-4db1-b114-c64db06ee9ef",
-  "name": "greeting",
-  "nodes": [
-    {
-      "id": "summary",
-      "type": "TEXT",
-      "dependsOn": ["greeting"],
-      "text": "${greeting.output} Done.",
-      "url": null,
-      "method": null,
-      "headers": {},
-      "body": null,
-      "timeoutMs": null
-    },
-    {
-      "id": "greeting",
-      "type": "TEXT",
-      "dependsOn": [],
-      "text": "Hello ${input.name}",
-      "url": null,
-      "method": null,
-      "headers": {},
-      "body": null,
-      "timeoutMs": null
-    }
-  ],
-  "createdAt": "2026-09-16T05:00:00Z"
-}
-```
+| 节点 | 配置 |
+| --- | --- |
+| TEXT | 必需 `text` |
+| HTTP | 必需 `url`；`method` 默认 GET，只接受 GET / POST；`headers` 字符串对象；POST 可带 `body`；`timeoutMs` 默认 3000、范围 100–30000 |
+| LLM | 必需 `modelRef` 和 `userPrompt`；可选 `systemPrompt`；`modelRef` 为 `mock-demo` 或 `live-default`；`timeoutMs` 默认 30000、范围 100–120000 |
 
-查询接口：
+HTTP URL 只允许 HTTP/HTTPS，禁止内嵌凭据与 fragment；动态 URL 在替换后重新校验。不自动跟随跳转或底层重试，响应正文最大 256 KiB。只读网络/超时、429、5xx 由工作流协调器最多再试两次；POST 使用外部操作协议。
 
-```http
-GET /api/workflows
-GET /api/workflows/{id}
-```
-
-第一个接口直接返回 `Workflow[]`，第二个返回单个 `Workflow`。
-
-只校验、不保存：
-
-```http
-POST /api/workflows/validate
-Content-Type: application/json
-```
-
-请求体与创建工作流相同。上面的乱序定义返回稳定拓扑顺序：
-
-```json
-{"valid":true,"order":["greeting","summary"]}
-```
-
-## 节点字段
-
-`Node` 包含 `id`、`type`、`dependsOn`、`text`、`url`、`method`、`headers`、`body`、`timeoutMs`。
-
-- `TEXT` 节点必须提供字符串 `text`。
-- `HTTP` 节点必须提供字符串 `url`；`method` 缺省为 `GET`，只接受 `GET` 或 `POST`。
-- `GET` 不允许 `body`。`headers` 是字符串到字符串的对象。
-- `timeoutMs` 缺省为 `3000`，范围为 `100` 至 `30000`。
-- `dependsOn` 缺省为 `[]`。
-- 定义最多包含 30 个节点，节点 id 必须匹配 `[A-Za-z][A-Za-z0-9_]{0,39}`。
-
-JSON 类型严格匹配。数字和布尔值不会转换成字符串，字符串和小数不会转换成 `timeoutMs`，数字不会转换成枚举。
-
-## 引用
-
-只支持两种引用：
-
-- `${input.key}` 读取运行输入。
-- `${nodeId.output}` 读取祖先节点输出。
-
-节点输出引用必须指向依赖图中的祖先。替换只执行一轮，因此输入值里的 `${...}` 会保留为普通文本。输入、节点配置和请求头中的每个字符串最长 20000 字符。每个字段完成插值后的结果最多为 262144 个 UTF-16 code unit；超过限制会令当前节点失败，后续节点跳过，并持久化本次运行。
-
-## 运行工作流
+## 创建与查询运行
 
 ```http
 POST /api/workflows/{id}/runs
 Content-Type: application/json
+Idempotency-Key: demo-request-1
+
+{"inputs":{"document":"业务文档内容"}}
 ```
 
-```json
-{"inputs":{"name":"Ada"}}
+`inputs` 默认为 `{}`，最多 50 个字符串字段；所有必需输入在外部调用前检查。同工作流、同键同参返回原 Run，异参 409。键可省略，省略时每个请求创建新运行。
+
+202 表示已持久创建，返回的 `status` 可能为 QUEUED、RUNNING 或终态。通过 GET 等待 SUCCEEDED / FAILED / MANUAL_REVIEW；运行内的业务失败不会转换成查询 HTTP 错误。节点包括 `attemptId` 和 `attempts`，重启中断尝试保留为 INTERRUPTED。
+
+## SSE
+
+```http
+GET /api/runs/{id}/events?after=7
+Last-Event-ID: 9
 ```
 
-`inputs` 缺省为 `{}`，最多包含 50 个字符串字段。所有必需输入会在任何节点执行前检查。
+取两个游标较大值，返回 seq 大于该值的已提交事件。负数或无效游标返回 400。
 
-成功运行返回 `200`：
+```text
+id: 10
+event: workflow
+data: {"runId":"...","nodeId":"summary","attemptId":1,"seq":10,"type":"LLM_DELTA","payload":{"text":"摘要片段"}}
+```
+
+事件含 `runId/nodeId/attemptId/seq/type/payload`。客户端按 seq 去重，按 nodeId 和 attemptId 分开模型答案；旧终态事件可能出现在恢复后的历史中，应追平当前数据库尾部后再结束。服务端终态追平后关闭，活动连接定期关闭以释放资源，可带游标重连。容量耗尽返回 429。
+
+## 外部 POST 协议
 
 ```json
 {
-  "id": "6ed8b763-c580-4792-a3aa-7adb73c3ccdc",
-  "workflowId": "3f357d30-81eb-4db1-b114-c64db06ee9ef",
-  "status": "SUCCEEDED",
-  "inputs": {"name":"Ada"},
-  "nodes": [
-    {"id":"greeting","status":"SUCCEEDED","output":"Hello Ada","error":null,"durationMs":0},
-    {"id":"summary","status":"SUCCEEDED","output":"Hello Ada Done.","error":null,"durationMs":0}
-  ],
-  "startedAt": "2026-09-16T05:01:00Z",
-  "finishedAt": "2026-09-16T05:01:00.004Z"
+  "id":"save","type":"HTTP","url":"http://127.0.0.1:18082/reports",
+  "method":"POST","body":"${report.output}","dependsOn":["report"],
+  "idempotency":{"supported":true,"lookupUrl":"http://127.0.0.1:18082/reports/by-key/{key}"}
 }
 ```
 
-节点失败时接口仍返回 `200` 和已持久化的 `Run`。失败节点为 `FAILED`，后续尚未执行的节点为 `SKIPPED`，整体状态为 `FAILED`。
-
-查询运行记录：
-
-```http
-GET /api/runs/{id}
-GET /api/workflows/{id}/runs
-```
-
-历史接口直接返回最近 50 条 `Run[]`，按 `startedAt` 降序排列。
-
-## HTTP 节点限制
-
-- URL 只允许 `http` 和 `https`，禁止内嵌凭据与 fragment。
-- 动态 URL 在引用替换后重新校验。
-- Apache HttpClient 显式禁用自动跳转和自动重试，每个 HTTP 节点只发送一次请求。
-- 超时覆盖连接、响应头和完整响应正文。
-- 响应正文最大为 256 KiB。
-- 非 2xx 状态会令节点失败，错误响应正文不会写入运行记录。
+运行时使用稳定 `Idempotency-Key: runId:nodeId`，先冻结请求并提交意图，再发送。协议要求下游同键同参重放原响应、异参冲突，lookup 200 返回原结果、404 明确未执行。超时、断线或接管先核查原键；明确缺失才允许原请求原键再发。无法可靠核查进入 MANUAL_REVIEW，`resume` 不绕过核查。
 
 ## 错误
 
-参数或定义错误返回 `400`，资源不存在返回 `404`，未处理的服务错误返回 `500`。错误正文统一为：
+参数 / JSON 为 400，资源缺失 404，冲突 409，SSE 容量 429，内部错误 500：
 
 ```json
-{"code":"VALIDATION_ERROR","message":"Required input is missing: name"}
+{"code":"VALIDATION_ERROR","message":"Required input is missing: document"}
 ```
 
-无效 JSON 使用 `INVALID_JSON`，不存在使用 `NOT_FOUND`，内部错误使用 `INTERNAL_ERROR`。内部异常、原请求体和数据库细节不会出现在响应中。
+常见 code：`INVALID_JSON`、`VALIDATION_ERROR`、`NOT_FOUND`、`CONFLICT`、`SSE_CAPACITY`、`INTERNAL_ERROR`。不向客户端返回原请求、数据库详情或内部堆栈。

@@ -1,5 +1,7 @@
 # FlowTrail Server 后端实现说明
 
+本文记录 0.1 的同步执行实现；当前 0.2 的有界并行、检查点和恢复链路见 [持久化运行时](runtime-implementation.md)，接口以 [0.2 API](api.md) 为准。
+
 ## 实现范围
 
 后端位于 `dev.flowtrail` 包，使用 Spring Boot Web、JDBC、H2 和 Java 21 虚拟线程。实现包括 8 个 API 路径、工作流定义校验、稳定拓扑执行、引用解析、受限 HTTP 客户端、H2 持久化、统一错误响应与严格 JSON 类型绑定。
@@ -19,6 +21,8 @@ HTTP 传输使用 Apache HttpClient5，并显式调用 `disableAutomaticRetries(
 ## 持久化
 
 `workflows` 保存名称、原定义顺序的节点 JSON 与创建时间。`runs` 保存最终状态、输入、拓扑执行顺序的节点结果和起止时间。表由幂等 `schema.sql` 初始化，运行历史通过 `(workflow_id, started_at)` 索引查询并限制为 50 条。
+
+文件数据库重开测试使用 JUnit 临时目录，第一次连接写入定义和运行记录，第二次重新创建数据源和仓储读取相同内容，不会接触默认数据库。
 
 ## 错误与输入安全
 

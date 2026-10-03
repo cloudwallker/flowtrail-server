@@ -123,6 +123,31 @@ public class WorkflowValidator {
       throw ApiException.validation("HTTP headers must contain string names and values");
     }
     Map<String, String> headers = node.headers() == null ? Map.of() : Map.copyOf(node.headers());
+    if (node.type() == NodeType.LLM) {
+      if (node.modelRef() == null
+          || !Set.of("mock-demo", "live-default").contains(node.modelRef())) {
+        throw ApiException.validation("LLM modelRef must be mock-demo or live-default");
+      }
+      validateString(node.userPrompt(), "LLM userPrompt");
+      validateOptionalString(node.systemPrompt(), "LLM systemPrompt");
+      int timeout = node.timeoutMs() == null ? 30000 : node.timeoutMs();
+      if (timeout < 100 || timeout > 120000)
+        throw ApiException.validation("LLM timeoutMs must be between 100 and 120000");
+      return new NodeDefinition(
+          node.id(),
+          NodeType.LLM,
+          dependencies,
+          null,
+          null,
+          null,
+          Map.of(),
+          null,
+          timeout,
+          node.modelRef(),
+          node.systemPrompt(),
+          node.userPrompt(),
+          null);
+    }
     if (node.type() == NodeType.TEXT) {
       if (node.text() == null) {
         throw ApiException.validation("TEXT node requires text");
@@ -151,7 +176,22 @@ public class WorkflowValidator {
         (key, value) -> {
           validateString(key, "HTTP header name");
           validateString(value, "HTTP header value");
+          if (Set.of("authorization", "proxy-authorization", "cookie", "x-api-key")
+              .contains(key.toLowerCase(Locale.ROOT)))
+            throw ApiException.validation(
+                "Credential headers must not be stored in workflow definitions");
+          if (key.equalsIgnoreCase("Idempotency-Key"))
+            throw ApiException.validation("Idempotency-Key is assigned by the runtime");
         });
+    if (node.idempotency() != null) {
+      if (!method.equals("POST")
+          || !node.idempotency().supported()
+          || node.idempotency().lookupUrl() == null
+          || !node.idempotency().lookupUrl().contains("{key}"))
+        throw ApiException.validation(
+            "Idempotency requires POST, supported=true and lookupUrl with {key}");
+      validateResolvedUrl(node.idempotency().lookupUrl().replace("{key}", "key"));
+    }
     if (!REFERENCE.matcher(node.url()).find()) {
       validateResolvedUrl(node.url());
     }
@@ -164,7 +204,11 @@ public class WorkflowValidator {
         method,
         headers,
         node.body(),
-        timeout);
+        timeout,
+        null,
+        null,
+        null,
+        node.idempotency());
   }
 
   private void validateDependencies(List<NodeDefinition> nodes, Set<String> knownIds) {
@@ -284,6 +328,8 @@ public class WorkflowValidator {
     if (node.body() != null) {
       values.add(node.body());
     }
+    if (node.systemPrompt() != null) values.add(node.systemPrompt());
+    if (node.userPrompt() != null) values.add(node.userPrompt());
     node.headers()
         .forEach(
             (key, value) -> {

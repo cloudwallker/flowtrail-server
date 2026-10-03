@@ -1,13 +1,27 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>FlowTrail · 工作流实验室</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
-<body><header><div class="brand">Flow<span>Trail</span> / Lab</div><span class="badge">JAVA 21 · LOCAL WORKSPACE</span></header><main>
-<section class="intro"><div><div class="eyebrow">WORKFLOW LABORATORY</div><h1>让每一步执行，都有迹可循。</h1><p>定义依赖，传递结果，检查每个节点的执行记录。</p></div><span class="pill">DAG 校验 → 执行 → 持久化</span></section>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>FlowTrail · 工作流实验室</title><link rel="stylesheet" href="/style.css"><script src="/run-state.js" defer></script><script src="/app.js" defer></script></head>
+<body>
+<header><div class="brand">Flow<span>Trail</span> / Lab</div><span class="badge">JAVA 21 · WORKFLOW MONITOR</span></header>
+<main>
+<section class="intro"><div><div class="eyebrow">WORKFLOW LABORATORY</div><h1>让每一步执行，都有迹可循。</h1><p>并行生成报告，查看实时输出，追溯每一次执行尝试。</p></div><span class="pill">DAG · 检查点 · 事件回放</span></section>
 <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
-<div class="grid"><div class="stack"><section class="panel"><div class="panel-title"><h2>工作流定义</h2><button id="example" class="secondary">加载离线示例</button></div><label for="definition">JSON 定义</label><textarea id="definition" class="code" spellcheck="false" aria-describedby="definition-hint"></textarea><p class="hint" id="definition-hint">支持 TEXT / HTTP 节点。dependsOn 声明依赖，使用 ${input.name} 和 ${nodeId.output} 传递数据。</p>
-<label for="inputs">运行输入</label><textarea id="inputs" rows="3" spellcheck="false">{"name":"开发者"}</textarea><div class="toolbar"><button id="validate" class="secondary">校验定义</button><button id="run" class="primary">保存并运行</button></div><p class="hint">离线示例不会发送网络请求。HTTP 节点仅应访问你信任的目标。</p></section>
-<section class="panel"><div class="panel-title"><h2>已保存工作流</h2><button id="refresh" class="secondary">刷新</button></div><div id="workflows" class="list"><div class="empty">尚未保存工作流</div></div></section></div>
-<div class="stack"><section class="panel"><div class="panel-title"><h2>执行轨迹</h2><span id="run-status" class="status">READY</span></div><p id="run-meta" class="meta">运行后可查看每个节点的输出、耗时与失败原因。</p><div id="nodes" class="list"><div class="empty">先运行左侧示例，开始你的第一条执行轨迹。</div></div></section>
-<section class="panel"><h2>运行历史</h2><p class="hint">选择已保存的工作流后显示最近 50 次运行，重启服务后仍可查看。</p><div id="history" class="list"><div class="empty">选择一个工作流</div></div></section>
-<section class="panel"><h2>本次实验可以观察什么</h2><p class="hint">① 调换节点的定义顺序，观察拓扑排序。<br>② 删除输入 name，观察执行前校验。<br>③ 让 HTTP 节点失败，观察后续节点 SKIPPED。</p></section></div></div>
-<footer>FlowTrail Server · 独立 Java 学习服务 · 本地单用户演示，无账户与权限隔离</footer></main></body></html>
-
+<div class="grid"><div class="stack">
+<section class="panel">
+<div class="panel-title"><h2>工作流定义</h2><button id="example" class="secondary">加载模板</button></div>
+<div class="inline"><div><label for="template">演示模板</label><select id="template"><option value="hello">离线文本流程</option><option value="summary">文档摘要 · mock</option><option value="analysis">接口数据解读 · mock</option><option value="report">业务报告 · mock + 模拟服务</option></select></div></div>
+<label for="definition">JSON 定义</label><textarea id="definition" class="code" spellcheck="false" aria-describedby="definition-hint"></textarea>
+<p class="hint" id="definition-hint">支持 TEXT / HTTP / LLM。dependsOn 声明依赖，使用 ${input.name} 和 ${nodeId.output} 传递数据。mock 模型用于离线验证；live-default 需要服务端配置真实模型。</p>
+<label for="inputs">运行输入（JSON）</label><textarea id="inputs" rows="5" spellcheck="false"></textarea>
+<div class="toolbar"><button id="validate" class="secondary">校验定义</button><button id="run" class="primary">保存并运行</button></div>
+<p class="hint">业务报告和接口模板需先启动本地模拟报告服务（默认 18082 端口）。运行将在后台继续，页面通过事件流查看进度。</p>
+</section>
+<section class="panel"><div class="panel-title"><h2>已保存工作流</h2><button id="refresh" class="secondary">刷新</button></div><div id="workflows" class="list"><div class="empty">尚未保存工作流</div></div></section>
+</div><div class="stack">
+<section class="panel"><div class="panel-title"><h2>执行轨迹</h2><span id="run-status" class="status">READY</span></div><p id="run-meta" class="meta">运行后可查看每个节点的结果、耗时与尝试记录。</p><div class="toolbar"><button id="reconnect" class="secondary" disabled>重连并补齐事件</button><button id="resume" class="secondary" disabled>申请恢复运行</button><span id="connection" class="meta">尚未连接</span></div><div id="nodes" class="list"><div class="empty">运行左侧模板，开始第一条执行轨迹。</div></div></section>
+<section class="panel"><div class="panel-title"><h2>模型输出与尝试</h2><span class="pill">各次尝试独立展示</span></div><div id="attempts" class="list"><div class="empty">尚无模型流式输出</div></div></section>
+<section class="panel"><div class="panel-title"><h2>持久化事件</h2><span id="cursor" class="meta">seq 0</span></div><p class="hint">显示最近 150 条。断线后按序号补齐，重复事件不会重复追加文本。</p><div id="events" class="event-list" aria-live="polite"></div></section>
+<section class="panel"><h2>运行历史</h2><p class="hint">选择工作流后显示最近 50 次运行。点击历史记录可以重新回放已提交事件。</p><div id="history" class="list"><div class="empty">选择一个工作流</div></div></section>
+</div></div>
+<footer>FlowTrail Server · 本地单用户演示 · mock 与 live 的运行模式在模型输出和定义中明确标注</footer>
+</main></body></html>
