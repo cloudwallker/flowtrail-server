@@ -106,11 +106,14 @@ The complete local 0.2.0 verification passed **48 Maven tests**, 7 web-state reg
 
 ```sh
 mvn clean verify
+python scripts/collect_licenses.py --check
 python scripts/smoke.py
 python scripts/recovery_smoke.py
 python -m unittest discover -s scripts -p test_mock_reports.py
 node --test scripts/ui-state.test.cjs scripts/ui-replay.test.cjs
 ```
+
+The license check compares every recorded runtime dependency and its original license/notice bytes with the built JAR. Git preserves `licenses/` without changing line endings.
 
 MySQL JUnit tests use `FLOWTRAIL_TEST_MYSQL_URL / USER / PASSWORD`. For process recovery tests, set `FLOWTRAIL_TEST_DB_URL / USER / PASSWORD` and add `--mysql`; the isolated database must be local and its name must end in `_test`.
 
