@@ -1,6 +1,6 @@
 # FlowTrail Server
 
-### Recoverable Java workflows with observable execution and safe restart handling
+### Recoverable Java workflows with checkpoints and persistent event replay
 
 **Orchestrate TEXT, HTTP, and LLM nodes with JSON DAGs, then inspect parallel execution, model streams, and attempt history in a local web UI. Checkpoints, persistent event replay, and external-write reconciliation make recovery traceable.**
 
