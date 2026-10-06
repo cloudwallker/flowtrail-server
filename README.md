@@ -129,3 +129,7 @@ The linked implementation documents are currently in Chinese.
 The initial version was implemented with assistance from an AI coding assistant. The design and demonstrations can be reproduced from the source code and recorded procedures above.
 
 Project code is licensed under [MIT](LICENSE). Dependencies retain their own licenses; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Interface
+
+A local durable workflow service with readable execution panels, clear operation feedback, keyboard navigation, and layouts for narrower screens.

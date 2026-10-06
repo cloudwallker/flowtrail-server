@@ -127,3 +127,7 @@ MySQL JUnit 设置 `FLOWTRAIL_TEST_MYSQL_URL / USER / PASSWORD`。真实进程�
 初始版本在 AI 编程助手协助下实现，设计解释与演示可从上述代码和操作记录复现。
 
 代码采用 [MIT](LICENSE)，依赖保留各自许可，见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
+## 界面体验
+
+本地持久化工作流服务，提供易读的执行面板、明确的操作反馈、键盘导航和窄屏布局。

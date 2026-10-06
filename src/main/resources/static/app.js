@@ -177,11 +177,15 @@ async function refresh() {
   }
 }
 async function action(work) {
+  $('operation-status').hidden = false;
+  document.querySelector('main').setAttribute('aria-busy', 'true');
   const buttons = [...document.querySelectorAll('button')];
   const previouslyDisabled = new Set(buttons.filter(button => button.disabled));
   buttons.forEach(button => button.disabled = true);
   try { await work(); } catch (error) { notice(error.message, true); }
   finally {
+    $('operation-status').hidden = true;
+    document.querySelector('main').setAttribute('aria-busy', 'false');
     buttons.forEach(button => button.disabled = previouslyDisabled.has(button));
     $('reconnect').disabled = !active;
     $('resume').disabled = !active?.run || !['FAILED', 'INTERRUPTED', 'MANUAL_REVIEW'].includes(active.run.status);
