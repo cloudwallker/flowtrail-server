@@ -3,14 +3,54 @@ import hashlib
 import http.client
 import json
 import socket
+import sqlite3
 from pathlib import Path
 import tempfile
 import threading
 import unittest
+from unittest.mock import patch
 import urllib.error
 import urllib.request
 
 from mock_reports import create_server
+
+
+class ConnectionLifecycleTest(unittest.TestCase):
+    def test_initialization_and_http_requests_close_database_connections(self):
+        connect = sqlite3.connect
+        connections = []
+
+        def track_connection(*args, **kwargs):
+            connection = connect(*args, **kwargs)
+            connections.append(connection)
+            return connection
+
+        with tempfile.TemporaryDirectory() as directory:
+            with patch("mock_reports.sqlite3.connect", side_effect=track_connection):
+                server = create_server("127.0.0.1", 0, Path(directory) / "reports.sqlite")
+                server.daemon_threads = False
+                thread = threading.Thread(target=server.serve_forever, daemon=True)
+                thread.start()
+                client = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+                base = "http://127.0.0.1:" + str(server.server_port)
+                try:
+                    requests = [
+                        urllib.request.Request(base + "/stats"),
+                        urllib.request.Request(base + "/metrics"),
+                        urllib.request.Request(base + "/reports", data=b"report", headers={"Idempotency-Key": "connection-test"}),
+                        urllib.request.Request(base + "/reports/by-key/connection-test"),
+                    ]
+                    for request in requests:
+                        with client.open(request, timeout=3) as response:
+                            self.assertEqual(200, response.status)
+                            response.read()
+                finally:
+                    server.shutdown()
+                    server.server_close()
+                    thread.join(timeout=2)
+            for connection in connections:
+                with self.assertRaises(sqlite3.ProgrammingError):
+                    _ = connection.in_transaction
 
 
 class ReportContractTest(unittest.TestCase):

@@ -4,6 +4,7 @@ Run: python scripts/mock_reports.py --port 18082 --database target/demo-reports.
 It deliberately drops one response when X-Demo-Drop-Response: once is supplied.
 """
 import argparse
+from contextlib import closing
 import hashlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
@@ -19,7 +20,7 @@ MAX_BODY = 256 * 1024
 def create_server(host, port, database):
     database = Path(database).resolve()
     database.parent.mkdir(parents=True, exist_ok=True)
-    with sqlite3.connect(database) as connection:
+    with closing(sqlite3.connect(database)) as connection, connection:
         connection.executescript("""
             CREATE TABLE IF NOT EXISTS reports (
                 operation_key TEXT PRIMARY KEY, digest TEXT NOT NULL,
@@ -60,7 +61,7 @@ def create_server(host, port, database):
             parsed = urlsplit(self.path)
             if parsed.path == "/health":
                 return self.send(200, {"status": "UP", "mode": "mock"})
-            with sqlite3.connect(database, timeout=5) as connection:
+            with closing(sqlite3.connect(database, timeout=5)) as connection, connection:
                 if parsed.path == "/stats":
                     values = {name: value for name, value in connection.execute("SELECT name,value FROM counters")}
                     values["reportCount"] = connection.execute("SELECT COUNT(*) FROM reports").fetchone()[0]
@@ -110,7 +111,7 @@ def create_server(host, port, database):
                 return self.send(400, {"message": "Report must be UTF-8"})
             digest = hashlib.sha256(raw).hexdigest()
             drop = False
-            with sqlite3.connect(database, timeout=5) as connection:
+            with closing(sqlite3.connect(database, timeout=5)) as connection, connection:
                 connection.execute("BEGIN IMMEDIATE")
                 count(connection, "postCalls")
                 row = connection.execute("SELECT digest,response,drop_consumed FROM reports WHERE operation_key=?", (key,)).fetchone()
