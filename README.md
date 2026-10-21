@@ -35,6 +35,8 @@ Start the local report service in another terminal:
 python scripts/mock_reports.py --port 18082 --database target/demo-reports.sqlite
 ```
 
+The report service closes SQLite connections after initialization and each database request, releasing file handles on Windows while preserving transaction commits and rollbacks.
+
 Select the parallel business report mock template in the web UI, load it, validate it, and run it. The workflow fetches synthetic metrics, generates a summary and risks concurrently, combines them into a report, and saves it to a local service with an idempotency lookup protocol. The template is labeled mock; events and node execution come from the actual runtime.
 
 ```mermaid

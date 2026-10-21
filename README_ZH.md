@@ -35,6 +35,8 @@ Windows 可双击 `start.bat`，或运行 `bin/start.ps1`；Linux/macOS 使用 `
 python scripts/mock_reports.py --port 18082 --database target/demo-reports.sqlite
 ```
 
+报告服务在初始化及每次数据库请求结束后显式关闭 SQLite 连接，释放 Windows 文件句柄，同时保留事务提交与回滚行为。
+
 页面选择“并行生成业务报告（mock）”，载入模板、校验并运行。流程获取模拟指标，并行生成摘要和风险，汇总报告后写入提供幂等查询协议的本地服务。页面明确显示 mock 模板，事件与节点执行来自实际运行时。
 
 ```mermaid
